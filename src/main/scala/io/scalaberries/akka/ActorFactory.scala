@@ -29,6 +29,10 @@ trait ActorFactory {
   }
 
   private def props: Props = {
-    Props(actorClass).withDispatcher(dispatcher).withMailbox(mailbox)
+    baseProps.withDispatcher(dispatcher).withMailbox(mailbox)
+  }
+
+  def baseProps: Props = {
+    Props(actorClass)
   }
 }
