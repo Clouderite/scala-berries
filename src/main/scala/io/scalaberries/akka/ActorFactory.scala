@@ -4,9 +4,9 @@ import akka.actor.{ActorRef, ActorRefFactory, Props}
 import akka.pattern.{Backoff, BackoffSupervisor}
 
 import scala.concurrent.duration.{DurationLong, FiniteDuration}
+import scala.reflect.runtime.universe._
 
-trait ActorFactory {
-  val actorClass: Class[_]
+trait ActorFactory[T] {
   val actorName: String
   val dispatcher = "akka.main-dispatcher"
   val mailbox = "akka.main-mailbox"
@@ -14,25 +14,48 @@ trait ActorFactory {
   val maxBackoff: FiniteDuration = 10.seconds
   val randomFactorBackoff = 0.2
 
-  def actor(implicit actorFactory: ActorRefFactory): ActorRef = {
-    actorFactory.actorOf(backoffProps)
+  def actor(implicit actorFactory: ActorRefFactory, tag: TypeTag[T]): ActorRef = {
+    actor()
   }
 
-  private def backoffProps: Props = {
-    BackoffSupervisor.props(Backoff.onStop(
-      props,
-      actorName,
-      minBackoff,
-      maxBackoff,
-      randomFactorBackoff
-    ))
+  def actor(dependencies: Any*)(implicit actorFactory: ActorRefFactory, tag: TypeTag[T]): ActorRef = {
+    createActor(props(dependencies: _*))
   }
 
-  private def props: Props = {
-    baseProps.withDispatcher(dispatcher).withMailbox(mailbox)
+  def actorWithBackoff(dependencies: Any*)(implicit actorFactory: ActorRefFactory, tag: TypeTag[T]): ActorRef = {
+    createActor(backoffProps(dependencies: _*))
   }
 
-  def baseProps: Props = {
-    Props(actorClass)
+  private def createActor(props: Props)(implicit actorFactory: ActorRefFactory) = {
+    val actorRef = actorFactory.actorOf(props, actorName + dynamicActorName)
+    postCreate()
+    actorRef
+  }
+
+  private def backoffProps(dependencies: Any*)(implicit tag: TypeTag[T]): Props = {
+    BackoffSupervisor.props(
+      Backoff.onStop(
+        props(dependencies: _*),
+        "back",
+        minBackoff,
+        maxBackoff,
+        randomFactorBackoff
+      )
+    )
+  }
+
+  private def props(dependencies: Any*)(implicit tag: TypeTag[T]): Props = {
+    baseProps(dependencies: _*).withDispatcher(dispatcher).withMailbox(mailbox)
+  }
+
+  def baseProps(dependencies: Any*)(implicit tag: TypeTag[T]): Props = {
+    Props(tag.mirror.runtimeClass(tag.tpe.typeSymbol.asClass), dependencies: _*)
+  }
+
+  def postCreate(): Unit = {
+  }
+
+  def dynamicActorName: String = {
+    ""
   }
 }
