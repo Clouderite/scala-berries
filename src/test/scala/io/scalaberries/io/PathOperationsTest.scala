@@ -4,6 +4,7 @@ import java.nio.file.Paths
 
 import io.scalaberries.io.PathOperations.toPathOperations
 import org.scalacheck.Gen
+import org.scalacheck.Gen.alphaChar
 import org.scalatest.prop.{GeneratorDrivenPropertyChecks, TableDrivenPropertyChecks}
 import org.scalatest.{FlatSpec, GivenWhenThen, MustMatchers}
 
@@ -61,6 +62,8 @@ class PathOperationsTest extends FlatSpec with MustMatchers with GeneratorDriven
   val subDirs = Table(
     ("path", "expected", "length", "depth"),
     ("/file/data/a7f2b16c188d762fc1b6dca017b4a808cd5b225a4da1c4a3a598d15f98c51866.jpg", "/file/data/a7/f2/a7f2b16c188d762fc1b6dca017b4a808cd5b225a4da1c4a3a598d15f98c51866.jpg", 2, 2),
+    ("a7f2b16c188d762fc1b6dca017b4a808cd5b225a4da1c4a3a598d15f98c51866.jpg", "a7/f2/a7f2b16c188d762fc1b6dca017b4a808cd5b225a4da1c4a3a598d15f98c51866.jpg", 2, 2),
+    ("a7f2b1.jpg", "a7/f2/a7f2b1.jpg", 2, 2),
     ("/file/data/a7f2b16c188d762fc1b6dca017b4a808cd5b225a4da1c4a3a598d15f98c51866.jpg", "/file/data/a7f2/b16c/188d/a7f2b16c188d762fc1b6dca017b4a808cd5b225a4da1c4a3a598d15f98c51866.jpg", 4, 3),
     ("/file/data/a7f2b16c188d762fc1b6dca017b4a808cd5b225a4da1c4a3a598d15f98c51866.jpg", "/file/data/a7f2b16c188d762fc1b6dca017b4a808cd5b225a4da1c4a3a598d15f98c51866.jpg", 2, 0),
     ("/file/data/a7f2b16c188d762fc1b6dca017b4a808cd5b225a4da1c4a3a598d15f98c51866.jpg", "/file/data/a7f2b16c188d762fc1b6dca017b4a808cd5b225a4da1c4a3a598d15f98c51866.jpg", 0, 2),
@@ -84,7 +87,7 @@ class PathOperationsTest extends FlatSpec with MustMatchers with GeneratorDriven
 
   "prefixPath" should "throw exception when negative values passed" in {
     forAll(Gen.alphaStr, Gen.negNum[Int], Gen.negNum[Int]) {
-      (path: String, length: Int, depth: Int) ⇒
+      (path  : String, length: Int, depth: Int) ⇒
         whenever(length < 0 && depth < 0) {
           Given(s"path $path, length $length and depth $depth")
           val testPath = Paths.get(path)
@@ -97,5 +100,24 @@ class PathOperationsTest extends FlatSpec with MustMatchers with GeneratorDriven
           thrown must not be null
         }
     }
+  }
+
+  "prefixPath" should "throw exception when path too short" in {
+    forAll(genAlphaStrN(5)) {
+      (path: String) ⇒
+        Given(s"path $path")
+        val testPath = Paths.get(path)
+
+        When("extension is called")
+        val thrown = intercept[IllegalArgumentException] {
+          testPath.prefixFileName(2, 3)
+        }
+
+        thrown must not be null
+    }
+  }
+
+  private def genAlphaStrN(size: Int) = {
+    Gen.listOfN(size, alphaChar).map(_.mkString)
   }
 }

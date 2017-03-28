@@ -2,6 +2,8 @@ package io.scalaberries.io
 
 import java.nio.file.{Path, Paths}
 
+import io.scalaberries.io.PathOperations.toPathOperations
+
 import scala.annotation.tailrec
 
 class PathOperations(path: Path) {
@@ -17,6 +19,16 @@ class PathOperations(path: Path) {
       .map(_.toLowerCase)
   }
 
+  def length: Int = {
+    path.toString.length
+  }
+
+  def base: Path = {
+    val pathLength = path.length
+    val extensionLength = path.extension.map(e ⇒ e.length).getOrElse(0)
+    Paths.get(path.toString.substring(0, pathLength - extensionLength - 1))
+  }
+
   def mkdirs(): Unit = {
     val file = path.toFile
     file.mkdirs()
@@ -24,7 +36,10 @@ class PathOperations(path: Path) {
 
   def prefixFileName(length: Int = 2, depth: Int = 2): Path = {
     require(length >= 0, depth >= 0)
-    path.getParent.resolve(prefixedDirs(length, depth, EmptyPath)).resolve(path.getFileName)
+    require(path.base.length >= length * depth)
+    val parent = Option.apply(path.getParent)
+    val child = prefixedDirs(length, depth, EmptyPath).resolve(path.getFileName)
+    parent.map(p ⇒ p.resolve(child)).getOrElse(child)
   }
 
   @tailrec
