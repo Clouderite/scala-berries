@@ -8,8 +8,8 @@ import scala.reflect.runtime.universe._
 
 trait ActorFactory[T] {
   val actorName: String
-  val dispatcher = "akka.main-dispatcher"
-  val mailbox = "akka.main-mailbox"
+  val dispatcher = "akka.actor.default-dispatcher"
+  val mailbox = "akka.actor.default-mailbox"
   val minBackoff: FiniteDuration = 1.seconds
   val maxBackoff: FiniteDuration = 10.seconds
   val randomFactorBackoff = 0.2
