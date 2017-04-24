@@ -13,9 +13,10 @@ trait ActorFactory[T] {
   val minBackoff: FiniteDuration = 1.seconds
   val maxBackoff: FiniteDuration = 10.seconds
   val randomFactorBackoff = 0.2
+  val dependencies: Array[Any] = Array.empty
 
   def actor(implicit actorFactory: ActorRefFactory, tag: TypeTag[T]): ActorRef = {
-    actor()
+    actor(dependencies: _*)
   }
 
   def actor(dependencies: Any*)(implicit actorFactory: ActorRefFactory, tag: TypeTag[T]): ActorRef = {
