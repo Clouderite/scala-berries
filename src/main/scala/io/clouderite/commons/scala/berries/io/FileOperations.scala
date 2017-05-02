@@ -1,4 +1,4 @@
-package io.clouderite.scalaberries.io
+package io.clouderite.commons.scala.berries.io
 
 import java.nio.file.{CopyOption, Files, Path}
 

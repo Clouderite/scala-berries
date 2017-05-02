@@ -1,4 +1,4 @@
-package io.clouderite.scalaberries.other
+package io.clouderite.commons.scala.berries.other
 
 import java.util.UUID
 

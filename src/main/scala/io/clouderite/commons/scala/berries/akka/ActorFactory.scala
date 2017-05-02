@@ -1,4 +1,4 @@
-package io.clouderite.scalaberries.akka
+package io.clouderite.commons.scala.berries.akka
 
 import akka.actor.{ActorRef, ActorRefFactory, Props}
 import akka.pattern.{Backoff, BackoffSupervisor}

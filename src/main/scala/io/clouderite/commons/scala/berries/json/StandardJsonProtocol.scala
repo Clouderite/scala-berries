@@ -1,4 +1,4 @@
-package io.clouderite.scalaberries.json
+package io.clouderite.commons.scala.berries.json
 
 import java.nio.file.{Path, Paths}
 import java.time.Instant

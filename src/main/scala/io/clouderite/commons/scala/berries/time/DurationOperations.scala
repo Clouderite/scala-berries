@@ -1,4 +1,4 @@
-package io.clouderite.scalaberries.time
+package io.clouderite.commons.scala.berries.time
 
 import java.time.Duration
 import java.time.temporal.{ChronoUnit, TemporalAmount}

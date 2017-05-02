@@ -1,4 +1,4 @@
-package io.clouderite.scalaberries.crypto
+package io.clouderite.commons.scala.berries.crypto
 
 class HashOperations(data: Array[Byte]) {
   def toHex: String = {

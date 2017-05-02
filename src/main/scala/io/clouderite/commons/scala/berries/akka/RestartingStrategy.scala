@@ -1,4 +1,4 @@
-package io.clouderite.scalaberries.akka
+package io.clouderite.commons.scala.berries.akka
 
 import akka.actor.SupervisorStrategy.{escalate, restart, stop}
 import akka.actor.{Actor, ActorInitializationException, ActorKilledException, ActorLogging, OneForOneStrategy}

@@ -1,8 +1,8 @@
-package io.clouderite.scalaberries.io
+package io.clouderite.commons.scala.berries.io
 
 import java.nio.file.{Path, Paths}
 
-import io.clouderite.scalaberries.io.PathOperations.toPathOperations
+import io.clouderite.commons.scala.berries.io.PathOperations.toPathOperations
 
 import scala.annotation.tailrec
 
