@@ -1,6 +1,6 @@
-package io.scalaberries.other
+package io.clouderite.scalaberries.other
 
-import io.scalaberries.other.StringOperations.toStringOperations
+import io.clouderite.scalaberries.other.StringOperations.toStringOperations
 import org.scalatest.{FlatSpec, GivenWhenThen, MustMatchers}
 
 class StringOperationsTest extends FlatSpec with MustMatchers with GivenWhenThen{

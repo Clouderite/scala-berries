@@ -1,9 +1,9 @@
-package io.scalaberries.crypto
+package io.clouderite.scalaberries.crypto
 
 import java.nio.file.Path
 import java.security.MessageDigest
 
-import io.scalaberries.io.FileOperations
+import io.clouderite.scalaberries.io.FileOperations
 
 object Sha256 {
   private val digest = MessageDigest.getInstance("SHA-256")

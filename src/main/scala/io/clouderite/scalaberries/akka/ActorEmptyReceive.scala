@@ -1,4 +1,4 @@
-package io.scalaberries.akka
+package io.clouderite.scalaberries.akka
 
 import akka.actor.Actor
 

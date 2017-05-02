@@ -1,8 +1,8 @@
-package io.scalaberries.io
+package io.clouderite.scalaberries.io
 
 import java.nio.file.Paths
 
-import io.scalaberries.io.PathOperations.toPathOperations
+import io.clouderite.scalaberries.io.PathOperations.toPathOperations
 import org.scalacheck.Gen
 import org.scalacheck.Gen.alphaChar
 import org.scalatest.prop.{GeneratorDrivenPropertyChecks, TableDrivenPropertyChecks}

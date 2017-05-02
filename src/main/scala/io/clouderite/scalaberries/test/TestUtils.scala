@@ -1,4 +1,4 @@
-package io.scalaberries.test
+package io.clouderite.scalaberries.test
 
 import java.security.SecureRandom
 

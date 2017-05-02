@@ -1,6 +1,6 @@
-package io.scalaberries.other
+package io.clouderite.scalaberries.other
 
-import io.scalaberries.other.StringOperations.toStringOperations
+import io.clouderite.scalaberries.other.StringOperations.toStringOperations
 
 class StringOperations(value: String) {
   def sliceLines(from: Int, to: Int): String = {

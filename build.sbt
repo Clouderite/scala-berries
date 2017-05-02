@@ -1,13 +1,23 @@
-organization := "io.scalaberries"
-name := "berries"
-version := "1.0"
+import java.util.{Date, TimeZone}
 
 scalaVersion := "2.11.8"
 
+organization := "io.scalaberries"
+name := "berries"
+version := "1.0.0-" + timestamp()
+
+ivyLoggingLevel := UpdateLogging.Full
+publishArtifact := true
+publishArtifact in Test := false
+publishMavenStyle := true
+pomIncludeRepository := { _ => false }
+publishTo := Some("Sonatype Releases Nexus" at "http://maven.clouderite.io/nexus/content/repositories/releases/")
+credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+
+resolvers += "Sonatype Releases Nexus" at "http://maven.clouderite.io/nexus/content/repositories/releases/"
+
 libraryDependencies ++= {
   val akkaV = "2.5.0"
-  val akkaHttpV = "10.0.5"
-  val scalazVersion = "7.1.9"
   Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "com.typesafe.akka" %% "akka-actor" % akkaV,
@@ -23,3 +33,9 @@ libraryDependencies ++= {
 
 fork := true
 scalacOptions ++= Seq("-Xmax-classfile-name", "110")
+
+def timestamp(): String = {
+  val sdf = new java.text.SimpleDateFormat("yyyyMMddHHmmss")
+  sdf.setTimeZone(TimeZone.getTimeZone("UTC"))
+  sdf.format(new Date(System.currentTimeMillis()))
+}
