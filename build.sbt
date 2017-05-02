@@ -2,8 +2,8 @@ import java.util.{Date, TimeZone}
 
 scalaVersion := "2.11.8"
 
-organization := "io.scalaberries"
-name := "berries"
+organization := "io.clouderite.commons"
+name := "scala-berries"
 version := "1.0.0-" + timestamp()
 
 ivyLoggingLevel := UpdateLogging.Full
