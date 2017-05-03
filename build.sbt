@@ -41,3 +41,8 @@ lazy val commonSettings = Seq(
   fork := true,
   scalacOptions ++= Seq("-Xmax-classfile-name", "110")
 )
+
+lazy val app = project
+  .in(file("."))
+  .settings(commonSettings)
+
