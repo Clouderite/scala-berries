@@ -30,7 +30,8 @@ lazy val commonSettings = Seq(
       "com.typesafe.akka" %% "akka-actor" % akkaV,
       "com.typesafe.akka" %% "akka-cluster" % akkaV,
       "com.typesafe.akka" %% "akka-cluster-tools" % akkaV,
-      "com.typesafe.akka" % "akka-http-spray-json-experimental_2.11" % "2.4.11",
+      "com.typesafe.akka" %% "akka-http-spray-json-experimental" % "2.4.11",
+      "com.typesafe.akka" %% "akka-testkit" % akkaV,
 
       "org.scalacheck" % "scalacheck_2.11" % "1.13.5" % "test",
       "org.scalatest" %% "scalatest" % "3.0.0" % "test",

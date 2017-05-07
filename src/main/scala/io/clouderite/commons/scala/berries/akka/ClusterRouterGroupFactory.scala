@@ -2,8 +2,8 @@ package io.clouderite.commons.scala.berries.akka
 
 import akka.actor.{ActorContext, ActorRef}
 import akka.cluster.routing.{ClusterRouterGroup, ClusterRouterGroupSettings}
-import akka.routing.{ConsistentHashingGroup, RandomGroup}
 import akka.routing.ConsistentHashingRouter.ConsistentHashMapping
+import akka.routing.{ConsistentHashingGroup, RandomGroup}
 
 case class ClusterRouterGroupSpecification(name: String, path: String, role: String) {
   def routerSettings(implicit context: ActorContext): ClusterRouterGroupSettings = {
@@ -12,7 +12,7 @@ case class ClusterRouterGroupSpecification(name: String, path: String, role: Str
 }
 
 object ClusterRouterGroupFactory {
-  def consistentHashingGroup(specification: ClusterRouterGroupSpecification)(hashMapping : ConsistentHashMapping)(implicit context: ActorContext): ActorRef = {
+  def consistentHashingGroup(specification: ClusterRouterGroupSpecification)(hashMapping: ConsistentHashMapping)(implicit context: ActorContext): ActorRef = {
     context.actorOf(
       ClusterRouterGroup(
         ConsistentHashingGroup(Nil, hashMapping = hashMapping),
@@ -25,6 +25,6 @@ object ClusterRouterGroupFactory {
       ClusterRouterGroup(
         RandomGroup(Nil),
         specification.routerSettings
-      ).props(), name = "credentialCheckRouter")
+      ).props(), name = specification.name)
   }
 }
