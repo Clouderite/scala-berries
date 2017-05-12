@@ -10,9 +10,11 @@ object Sha256 {
 
   def hashFile(path: Path)(implicit fileOperations: FileOperations): Array[Byte] = {
     val data = fileOperations.readAllBytes(path)
+    hash(data)
+  }
+
+  def hash(data: Array[Byte]): Array[Byte] = {
     digest.update(data)
     digest.digest()
   }
-
-  digest.digest().map("%02x" format _).mkString
 }
