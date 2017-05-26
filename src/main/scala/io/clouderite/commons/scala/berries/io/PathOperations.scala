@@ -2,6 +2,8 @@ package io.clouderite.commons.scala.berries.io
 
 import java.nio.file.{Path, Paths}
 
+import io.clouderite.commons.scala.berries.crypto.HashOperations.toHashOperations
+import io.clouderite.commons.scala.berries.crypto.Sha256
 import io.clouderite.commons.scala.berries.io.PathOperations.toPathOperations
 
 import scala.annotation.tailrec
@@ -53,6 +55,10 @@ class PathOperations(path: Path) {
     } else {
       subPath
     }
+  }
+
+  def hash(implicit fileOperations: FileOperations): String = {
+    Sha256.hashFile(path).toHex
   }
 }
 
