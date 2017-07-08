@@ -7,7 +7,7 @@ def timestamp(): String = {
 }
 
 lazy val commonSettings = Seq(
-  scalaVersion := "2.11.8",
+  scalaVersion := "2.12.1",
 
   organization := "io.clouderite.commons",
   name := "scala-berries",
@@ -25,15 +25,17 @@ lazy val commonSettings = Seq(
 
   libraryDependencies ++= {
     val akkaV = "2.5.0"
+    val akkaHttpV = "10.0.5"
+    
     Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value,
       "com.typesafe.akka" %% "akka-actor" % akkaV,
       "com.typesafe.akka" %% "akka-cluster" % akkaV,
       "com.typesafe.akka" %% "akka-cluster-tools" % akkaV,
-      "com.typesafe.akka" %% "akka-http-spray-json-experimental" % "2.4.11",
+      "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpV,
       "com.typesafe.akka" %% "akka-testkit" % akkaV,
 
-      "org.scalacheck" % "scalacheck_2.11" % "1.13.5" % "test",
+      "org.scalacheck" %% "scalacheck" % "1.13.5" % "test",
       "org.scalatest" %% "scalatest" % "3.0.0" % "test",
       "org.mockito" % "mockito-core" % "1.10.19" % "test"
     )
