@@ -35,7 +35,7 @@ trait ActorFactory[T] {
 
   private def backoffProps(dependencies: Any*)(implicit tag: TypeTag[T]): Props = {
     BackoffSupervisor.props(
-      Backoff.onStop(
+      Backoff.onFailure(
         props(dependencies: _*),
         "back",
         minBackoff,
