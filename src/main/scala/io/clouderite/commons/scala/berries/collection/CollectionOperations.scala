@@ -1,4 +1,4 @@
-package io.clouderite.commons.scala.berries.other
+package io.clouderite.commons.scala.berries.collection
 
 object CollectionOperations {
   implicit def toList[B, A <% B](l: List[A]): List[B] = l map { x ⇒ x: B }

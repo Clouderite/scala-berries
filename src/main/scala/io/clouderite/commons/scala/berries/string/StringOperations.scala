@@ -1,6 +1,8 @@
-package io.clouderite.commons.scala.berries.other
+package io.clouderite.commons.scala.berries.string
 
-import io.clouderite.commons.scala.berries.other.StringOperations.toStringOperations
+import io.clouderite.commons.scala.berries.string.StringOperations.toStringOperations
+
+import scala.util.matching.Regex
 
 class StringOperations(value: String) {
   def sliceLines(from: Int, to: Int): String = {
@@ -28,6 +30,9 @@ class StringOperations(value: String) {
     require(num >= 0, "num parameter must be greater than or equal 0")
     value.linesWithSeparators.drop(num).mkString
   }
+
+  def matches(pattern: Regex): Boolean =
+    pattern unapplySeq value isDefined
 }
 
 object StringOperations {

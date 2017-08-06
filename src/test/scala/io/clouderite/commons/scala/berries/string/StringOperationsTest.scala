@@ -1,9 +1,10 @@
-package io.clouderite.commons.scala.berries.other
+package io.clouderite.commons.scala.berries.string
 
-import io.clouderite.commons.scala.berries.other.StringOperations.toStringOperations
+import io.clouderite.commons.scala.berries.string.StringOperations.toStringOperations
+import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatest.{FlatSpec, GivenWhenThen, MustMatchers}
 
-class StringOperationsTest extends FlatSpec with MustMatchers with GivenWhenThen{
+class StringOperationsTest extends FlatSpec with MustMatchers with GivenWhenThen with TableDrivenPropertyChecks {
 
   "sliceLines" must "return proper slice" in {
     Given("test string and expected value")
@@ -79,7 +80,6 @@ class StringOperationsTest extends FlatSpec with MustMatchers with GivenWhenThen
       """.stripMargin.trim
 
     val expected = List("Line 1\n", "Line 4\nLine 5")
-
     val sut = value
 
     When("negSliceLines is executed")
@@ -87,5 +87,47 @@ class StringOperationsTest extends FlatSpec with MustMatchers with GivenWhenThen
 
     Then("returned slice must be equal to expected one")
     retValue mustBe expected
+  }
+
+  val positiveMatches = Table(
+    ("string", "regex"),
+    ("scala", "[a-z]*"),
+    ("scala", "^[a-z]*$"),
+    ("scala", "scala"),
+    ("scala", "^scala$")
+  )
+  
+  "matches" must "return true for matching regex" in {
+    forAll(positiveMatches) { (value, regex) ⇒
+      Given("test string positively matching regex")
+      val sut = value
+
+      When("matches is executed")
+      val result = sut matches regex
+
+      Then("returned result must be true")
+      result mustBe true
+    }
+  }
+
+  val negativeMatches = Table(
+    ("string", "regex"),
+    ("scala", "[A-Z]*"),
+    ("scala", "scal"),
+    ("scala", "^scal"),
+    ("scala", "cala$")
+  )
+
+  "matches" must "return false for not matching regex" in {
+    forAll(negativeMatches) { (value, regex) ⇒
+      Given("test string negatively matching regex")
+      val sut = value
+
+      When("matches is executed")
+      val result = sut matches regex
+
+      Then("returned result must be false")
+      result mustBe false
+    }
   }
 }
