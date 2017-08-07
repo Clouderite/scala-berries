@@ -4,6 +4,8 @@ import io.clouderite.commons.scala.berries.string.StringOperations.toStringOpera
 import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatest.{FlatSpec, GivenWhenThen, MustMatchers}
 
+import scala.util.{Failure, Success}
+
 class StringOperationsTest extends FlatSpec with MustMatchers with GivenWhenThen with TableDrivenPropertyChecks {
 
   "sliceLines" must "return proper slice" in {
@@ -91,10 +93,10 @@ class StringOperationsTest extends FlatSpec with MustMatchers with GivenWhenThen
 
   val positiveMatches = Table(
     ("string", "regex"),
-    ("scala", "[a-z]*"),
-    ("scala", "^[a-z]*$"),
-    ("scala", "scala"),
-    ("scala", "^scala$")
+    ("scala", "[a-z]*".r),
+    ("scala", "^[a-z]*$".r),
+    ("scala", "scala".r),
+    ("scala", "^scala$".r)
   )
   
   "matches" must "return true for matching regex" in {
@@ -110,12 +112,25 @@ class StringOperationsTest extends FlatSpec with MustMatchers with GivenWhenThen
     }
   }
 
+  "tryMatch" must "return Success for matching regex" in {
+    forAll(positiveMatches) { (value, regex) ⇒
+      Given("test string positively matching regex")
+      val sut = value
+
+      When("tryMatch is executed")
+      val result = sut tryMatch regex
+
+      Then("returned result must be Success")
+      result must matchPattern { case Success(v) if v == value ⇒ }
+    }
+  }
+
   val negativeMatches = Table(
     ("string", "regex"),
-    ("scala", "[A-Z]*"),
-    ("scala", "scal"),
-    ("scala", "^scal"),
-    ("scala", "cala$")
+    ("scala", "[A-Z]*".r),
+    ("scala", "scal".r),
+    ("scala", "^scal".r),
+    ("scala", "cala$".r)
   )
 
   "matches" must "return false for not matching regex" in {
@@ -128,6 +143,19 @@ class StringOperationsTest extends FlatSpec with MustMatchers with GivenWhenThen
 
       Then("returned result must be false")
       result mustBe false
+    }
+  }
+
+  "tryMatch" must "return Failure for not matching regex" in {
+    forAll(negativeMatches) { (value, regex) ⇒
+      Given("test string negatively matching regex")
+      val sut = value
+
+      When("tryMatch is executed")
+      val result = sut tryMatch regex
+
+      Then("returned result must be Failure")
+      result must matchPattern { case Failure(ex) ⇒ }
     }
   }
 }

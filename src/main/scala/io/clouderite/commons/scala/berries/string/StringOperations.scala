@@ -3,6 +3,8 @@ package io.clouderite.commons.scala.berries.string
 import io.clouderite.commons.scala.berries.string.StringOperations.toStringOperations
 
 import scala.util.matching.Regex
+import scala.util.{Failure, Success, Try}
+import scalaz.syntax.std.boolean._
 
 class StringOperations(value: String) {
   def sliceLines(from: Int, to: Int): String = {
@@ -33,6 +35,11 @@ class StringOperations(value: String) {
 
   def matches(pattern: Regex): Boolean =
     pattern unapplySeq value isDefined
+
+  def tryMatch(pattern: Regex): Try[String] =
+    matches(pattern)
+      .option(Success(value))
+      .getOrElse(Failure(new IllegalArgumentException(s"cannot match value against pattern '$pattern'")))
 }
 
 object StringOperations {
