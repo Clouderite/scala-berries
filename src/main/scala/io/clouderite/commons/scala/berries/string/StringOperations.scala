@@ -1,5 +1,8 @@
 package io.clouderite.commons.scala.berries.string
 
+import java.io.ByteArrayOutputStream
+import java.util.zip.GZIPOutputStream
+
 import io.clouderite.commons.scala.berries.string.StringOperations.toStringOperations
 
 import scala.util.matching.Regex
@@ -19,7 +22,7 @@ class StringOperations(value: String) {
     require(from >= 0, "from parameter must be greater than or equal 0")
     require(to >= 0, "to parameter must be greater than or equal 0")
     require(from <= to, "from parameter must be lower than or equal to parameter")
-    
+
     List(value.takeLines(from), value.dropLines(to + 1))
   }
 
@@ -40,6 +43,14 @@ class StringOperations(value: String) {
     matches(pattern)
       .option(Success(value))
       .getOrElse(Failure(new IllegalArgumentException(s"cannot match value against pattern '$pattern'")))
+
+  def gzip: Array[Byte] = {
+    val b = new ByteArrayOutputStream()
+    val gzip = new GZIPOutputStream(b)
+    gzip.write(value.getBytes("UTF-8"))
+    gzip.close()
+    b.toByteArray
+  }
 }
 
 object StringOperations {

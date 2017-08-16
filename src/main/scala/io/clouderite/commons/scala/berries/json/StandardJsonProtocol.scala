@@ -29,6 +29,22 @@ object PathJsonFormat extends RootJsonFormat[Path] {
   }
 }
 
+class EnumJsonFormat[T <: Enumeration](e: T) extends RootJsonFormat[T#Value] {
+  override def write(obj: T#Value): JsValue = JsString(obj.toString)
+
+  override def read(json: JsValue): T#Value = {
+    json match {
+      case JsString(txt) => e.withName(txt)
+      case somethingElse => throw DeserializationException(s"Expected a value from enum $e instead of $somethingElse")
+    }
+  }
+}
+
+object EnumJsonFormat {
+  def apply[T <: Enumeration](e: T): RootJsonFormat[T#Value] =
+    new EnumJsonFormat[T](e)
+}
+
 object AnyJsonFormat extends RootJsonFormat[Any] {
   def write(x: Any): JsValue = x match {
     case n: Int => JsNumber(n)

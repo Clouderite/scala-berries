@@ -8,6 +8,7 @@ def timestamp(): String = {
 
 lazy val commonSettings = Seq(
   scalaVersion := "2.12.1",
+  crossScalaVersions := Seq("2.11.8", "2.12.1"),
 
   organization := "io.clouderite.commons",
   name := "scala-berries",
