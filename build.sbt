@@ -49,4 +49,5 @@ lazy val publishSettings = Seq(
 lazy val app = project
   .in(file("."))
   .settings(commonSettings)
+  .settings(publishSettings)
 
