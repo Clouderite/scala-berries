@@ -39,9 +39,9 @@ lazy val publishSettings = Seq(
 
   publishTo := Some(
     if (isSnapshot.value)
-      "Sonatype Releases Nexus" at "https://maven.clouderite.io/nexus/content/repositories/snapshots/"
+      "Clouderite Snapshots Nexus" at "https://maven.clouderite.io/nexus/content/repositories/snapshots/"
     else
-      "Sonatype Releases Nexus" at "https://maven.clouderite.io/nexus/content/repositories/releases/"
+      "Clouderite Releases Nexus" at "https://maven.clouderite.io/nexus/content/repositories/releases/"
   )
 )
 
