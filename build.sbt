@@ -4,7 +4,6 @@ lazy val commonSettings = Seq(
 
   organization := "io.clouderite.commons",
   name := "scala-berries",
-  version := "1.0.2",
 
   libraryDependencies ++= {
     val akkaV = "2.5.0"
