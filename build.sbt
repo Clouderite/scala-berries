@@ -1,33 +1,15 @@
-import java.util.{Date, TimeZone}
-
-def timestamp(): String = {
-  val sdf = new java.text.SimpleDateFormat("yyyyMMddHHmmss")
-  sdf.setTimeZone(TimeZone.getTimeZone("UTC"))
-  sdf.format(new Date(System.currentTimeMillis()))
-}
-
 lazy val commonSettings = Seq(
   scalaVersion := "2.12.1",
   crossScalaVersions := Seq("2.11.8", "2.12.1"),
 
   organization := "io.clouderite.commons",
   name := "scala-berries",
-  version := "1.0.1." + timestamp(),
-
-  ivyLoggingLevel := UpdateLogging.Full,
-  publishArtifact := true,
-  publishArtifact in Test := false,
-  publishMavenStyle := true,
-  pomIncludeRepository := { _ => false },
-  publishTo := Some("Sonatype Releases Nexus" at "https://maven.clouderite.io/nexus/content/repositories/releases/"),
-  credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
-
-  resolvers += "Sonatype Releases Nexus" at "https://maven.clouderite.io/nexus/content/repositories/releases/",
+  version := "1.0.2",
 
   libraryDependencies ++= {
     val akkaV = "2.5.0"
     val akkaHttpV = "10.0.5"
-    
+
     Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value,
       "com.typesafe.akka" %% "akka-actor" % akkaV,
@@ -45,6 +27,23 @@ lazy val commonSettings = Seq(
 
   fork := true,
   scalacOptions ++= Seq("-Xmax-classfile-name", "110")
+)
+
+lazy val publishSettings = Seq(
+  ivyLoggingLevel := UpdateLogging.Full,
+  publishArtifact := true,
+  publishArtifact in Test := false,
+  publishMavenStyle := true,
+  pomIncludeRepository := { _ => false },
+
+  credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
+
+  publishTo := Some(
+    if (isSnapshot.value)
+      "Sonatype Releases Nexus" at "https://maven.clouderite.io/nexus/content/repositories/snapshots/"
+    else
+      "Sonatype Releases Nexus" at "https://maven.clouderite.io/nexus/content/repositories/releases/"
+  )
 )
 
 lazy val app = project
