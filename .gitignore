@@ -18,3 +18,4 @@ project/boot/
 project/plugins/project/
 project/target
 project/project/target
+slack.webhook

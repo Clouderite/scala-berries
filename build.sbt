@@ -45,6 +45,36 @@ lazy val publishSettings = Seq(
   )
 )
 
+val slackNotify = ReleaseStep(action = st => {
+  import net.gpedro.integrations.slack.{SlackApi, SlackMessage}
+  import scala.io.Source
+  val api = new SlackApi(Source.fromFile("slack.webhook").mkString)
+
+  val extracted = Project.extract(st)
+  val version = extracted.get(Keys.version)
+  val group = extracted.get(Keys.organization)
+  val artifact = extracted.get(Keys.name)
+  api.call(new SlackMessage(s"""New release "$group" %% "$artifact" % "$version"""))
+  st
+})
+
+
+import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  slackNotify,
+  commitReleaseVersion,
+  tagRelease,
+  publishArtifacts,
+  setNextVersion,
+  commitNextVersion,
+  pushChanges
+)
+
 lazy val app = project
   .in(file("."))
   .settings(commonSettings)
