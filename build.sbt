@@ -58,7 +58,6 @@ val slackNotify = ReleaseStep(action = st => {
   st
 })
 
-
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
