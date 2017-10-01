@@ -1,3 +1,6 @@
+val akkaV = "2.5.6"
+val akkaHttpV = "10.0.10"
+
 lazy val commonSettings = Seq(
   scalaVersion := "2.12.1",
   crossScalaVersions := Seq("2.11.8", "2.12.1"),
@@ -6,9 +9,6 @@ lazy val commonSettings = Seq(
   name := "scala-berries",
 
   libraryDependencies ++= {
-    val akkaV = "2.5.0"
-    val akkaHttpV = "10.0.5"
-
     Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value,
       "com.typesafe.akka" %% "akka-actor" % akkaV,
