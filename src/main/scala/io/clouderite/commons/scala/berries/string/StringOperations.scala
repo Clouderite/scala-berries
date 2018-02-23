@@ -1,8 +1,6 @@
 package io.clouderite.commons.scala.berries.string
 
-import java.io.ByteArrayOutputStream
-import java.util.zip.GZIPOutputStream
-
+import io.clouderite.commons.scala.berries.other.Gzipper
 import io.clouderite.commons.scala.berries.string.StringOperations.toStringOperations
 
 import scala.util.matching.Regex
@@ -44,13 +42,8 @@ class StringOperations(value: String) {
       .option(Success(value))
       .getOrElse(Failure(new IllegalArgumentException(s"cannot match value against pattern '$pattern'")))
 
-  def gzip: Array[Byte] = {
-    val b = new ByteArrayOutputStream()
-    val gzip = new GZIPOutputStream(b)
-    gzip.write(value.getBytes("UTF-8"))
-    gzip.close()
-    b.toByteArray
-  }
+  def gzip: Array[Byte] =
+    Gzipper.gzip(value)
 }
 
 object StringOperations {

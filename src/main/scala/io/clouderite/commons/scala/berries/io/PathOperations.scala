@@ -1,12 +1,15 @@
 package io.clouderite.commons.scala.berries.io
 
-import java.nio.file.{Path, Paths}
+import java.io.{IOException, InputStream}
+import java.nio.file.{Files, Path, Paths}
 
 import io.clouderite.commons.scala.berries.crypto.HashOperations.toHashOperations
 import io.clouderite.commons.scala.berries.crypto.Sha256
 import io.clouderite.commons.scala.berries.io.PathOperations.toPathOperations
 
 import scala.annotation.tailrec
+import scala.io.Source
+import scala.util.Try
 
 class PathOperations(path: Path) {
   val ExtensionSeparator = '.'
@@ -59,6 +62,33 @@ class PathOperations(path: Path) {
 
   def hash(implicit fileOperations: FileOperations): String = {
     Sha256.hashFile(path).toHex
+  }
+
+  def withInputStream[T](inner: (InputStream) ⇒ T): Try[T] = {
+    val is = Files.newInputStream(path)
+    val tryResult = Try(inner(is))
+    is.close()
+    tryResult
+  }
+
+  def readText: String =
+    Source.fromFile(path.toFile).mkString
+
+  def readBinary: Array[Byte] =
+    Source.fromFile(path.toFile).map(_.toByte).toArray
+
+  def readResourceText: String = {
+    def withResourceInputStream[T](inner: InputStream ⇒ T): T = {
+      val classLoader = Thread.currentThread().getContextClassLoader
+      val is = Try(classLoader.getResourceAsStream(path.toString))
+      val res = is.map(inner).getOrElse(throw new IOException())
+      is.map(_.close())
+      res
+    }
+
+    withResourceInputStream { is ⇒
+      Source.fromInputStream(is).mkString
+    }
   }
 }
 

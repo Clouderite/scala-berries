@@ -28,8 +28,8 @@ trait ActorFactory[T] {
   }
 
   private def createActor(props: Props)(implicit actorFactory: ActorRefFactory) = {
-    val actorRef = actorFactory.actorOf(props, actorName + dynamicActorName)
-    postCreate()
+    val actorRef = actorFactory.actorOf(props, actorName)
+    postCreate(actorRef)
     actorRef
   }
 
@@ -53,10 +53,6 @@ trait ActorFactory[T] {
     Props(tag.mirror.runtimeClass(tag.tpe.typeSymbol.asClass), dependencies: _*)
   }
 
-  def postCreate(): Unit = {
-  }
-
-  def dynamicActorName: String = {
-    ""
+  def postCreate(actorRef: ActorRef): Unit = {
   }
 }
