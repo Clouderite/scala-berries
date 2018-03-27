@@ -2,6 +2,7 @@ package io.clouderite.commons.scala.berries.akka
 
 import akka.actor.{ActorRef, ActorRefFactory, Props}
 import akka.pattern.{Backoff, BackoffSupervisor}
+import akka.routing.{DefaultResizer, RandomPool}
 
 import scala.concurrent.duration.{DurationLong, FiniteDuration}
 import scala.reflect.runtime.universe._
@@ -14,6 +15,9 @@ trait ActorFactory[T] {
   val maxBackoff: FiniteDuration = 10.seconds
   val randomFactorBackoff = 0.2
   val dependencies: Array[Any] = Array.empty
+  val poolSize: Int = 1
+  val minPoolSize: Int = poolSize
+  val maxPoolSize: Int = poolSize
 
   def actor(implicit actorFactory: ActorRefFactory, tag: TypeTag[T]): ActorRef = {
     actor(dependencies: _*)
@@ -28,7 +32,13 @@ trait ActorFactory[T] {
   }
 
   private def createActor(props: Props)(implicit actorFactory: ActorRefFactory) = {
-    val actorRef = actorFactory.actorOf(props, actorName)
+    val actorRef = if (poolSize == 1) {
+      actorFactory.actorOf(props, actorName)
+    } else {
+      val poolResizer = DefaultResizer(lowerBound = minPoolSize, upperBound = maxPoolSize)
+      actorFactory.actorOf(RandomPool(poolSize, resizer = Some(poolResizer)).props(props), actorName)
+    }
+
     postCreate(actorRef)
     actorRef
   }
