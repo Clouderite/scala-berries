@@ -19,7 +19,7 @@ lazy val commonSettings = Seq(
       "org.scalaz" %% "scalaz-core" % "7.3.0-M30",
 
       "org.scalacheck" %% "scalacheck" % "1.14.3" % "test",
-      "org.scalatest" %% "scalatest" % "3.2.0-M1" % "test",
+      "org.scalatest" %% "scalatest" % "3.0.8" % "test",
       "org.mockito" % "mockito-core" % "1.10.19" % "test"
     )
   },
