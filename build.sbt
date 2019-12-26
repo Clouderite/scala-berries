@@ -16,10 +16,10 @@ lazy val commonSettings = Seq(
       "com.typesafe.akka" %% "akka-cluster-tools" % akkaV,
       "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpV,
       "com.typesafe.akka" %% "akka-testkit" % akkaV,
-      "org.scalaz" %% "scalaz-core" % "7.2.14",
+      "org.scalaz" %% "scalaz-core" % "7.3.0-M30",
 
-      "org.scalacheck" %% "scalacheck" % "1.13.5" % "test",
-      "org.scalatest" %% "scalatest" % "3.0.0" % "test",
+      "org.scalacheck" %% "scalacheck" % "1.14.3" % "test",
+      "org.scalatest" %% "scalatest" % "3.2.0-M1" % "test",
       "org.mockito" % "mockito-core" % "1.10.19" % "test"
     )
   },
