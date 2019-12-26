@@ -1,5 +1,5 @@
-val akkaV = "2.5.6"
-val akkaHttpV = "10.0.10"
+val akkaV = "2.5.23"
+val akkaHttpV = "10.1.11"
 
 lazy val commonSettings = Seq(
   scalaVersion := "2.12.1",
