@@ -3,7 +3,7 @@ val akkaHttpV = "10.0.10"
 
 lazy val commonSettings = Seq(
   scalaVersion := "2.12.1",
-  crossScalaVersions := Seq("2.11.8", "2.12.1"),
+  crossScalaVersions := Seq("2.11.8", "2.12.1", "2.13.1"),
 
   organization := "io.clouderite.commons",
   name := "scala-berries",
@@ -35,13 +35,13 @@ lazy val publishSettings = Seq(
   publishMavenStyle := true,
   pomIncludeRepository := { _ => false },
 
-  credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
+  credentials += Credentials(Path.userHome / ".ivy2" / ".credentials-abaro"),
 
   publishTo := Some(
     if (isSnapshot.value)
-      "Clouderite Snapshots Nexus" at "https://maven.clouderite.io/nexus/content/repositories/snapshots/"
+      "Abaro Snapshots Nexus" at "https://maven.abaro.it/nexus/content/repositories/snapshots/"
     else
-      "Clouderite Releases Nexus" at "https://maven.clouderite.io/nexus/content/repositories/releases/"
+      "Abaro Releases Nexus" at "https://maven.abaro.it/nexus/content/repositories/releases/"
   )
 )
 
