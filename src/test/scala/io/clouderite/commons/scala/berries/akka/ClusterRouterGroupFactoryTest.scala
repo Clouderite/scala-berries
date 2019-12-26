@@ -13,6 +13,7 @@ import org.scalatest.{BeforeAndAfterAll, FlatSpecLike, MustMatchers}
 
 import scala.concurrent.Await
 import scala.concurrent.duration.{DurationDouble, FiniteDuration}
+import scala.language.postfixOps
 
 class ClusterRouterGroupFactoryTest extends TestKit(ActorSystem("test")) with FlatSpecLike with BeforeAndAfterAll with MustMatchers with GeneratorDrivenPropertyChecks {
   private val duration: FiniteDuration = 5 seconds
