@@ -60,17 +60,6 @@ class ClusterRouterGroupFactoryTest extends TestKit(ActorSystem("test")) with Fl
     }
   }
 
-  "randomGroup" must "create cluster router actor with given name" in {
-    withParent { parent ⇒
-      withSpecification { specification ⇒
-        val future = parent.ref.ask(("random", specification))(timeout)
-
-        val result = Await.result(future, duration).asInstanceOf[ActorRef]
-        assertHasPath(result, "/user/" + parent.name + "/" + specification.name)
-      }
-    }
-  }
-
   private def assertHasPath(actorRef: ActorRef, path: String) {
     implicit val executionContext = system.dispatcher
     val selectedActor = Await.result(system.actorSelection(path).resolveOne(), duration)
