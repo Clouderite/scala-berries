@@ -24,8 +24,8 @@ lazy val commonSettings = Seq(
     )
   },
 
-  fork := true,
-  scalacOptions ++= Seq("-Xmax-classfile-name", "110")
+  fork := true
+//  scalacOptions ++= Seq("-Xmax-classfile-name", "110")
 )
 
 lazy val publishSettings = Seq(
