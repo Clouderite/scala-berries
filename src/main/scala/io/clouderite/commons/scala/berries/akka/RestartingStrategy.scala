@@ -5,6 +5,8 @@ import akka.actor.{Actor, ActorInitializationException, ActorKilledException, Ac
 
 import scala.concurrent.duration.DurationInt
 
+import scala.language.postfixOps
+
 trait RestartingStrategy extends Actor with ActorLogging {
   override val supervisorStrategy: OneForOneStrategy = OneForOneStrategy(maxNrOfRetries = 10, withinTimeRange = 1 minutes) {
     case _: ActorInitializationException ⇒

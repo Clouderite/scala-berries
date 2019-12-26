@@ -7,6 +7,9 @@ import scala.util.matching.Regex
 import scala.util.{Failure, Success, Try}
 import scalaz.syntax.std.boolean._
 
+import scala.language.implicitConversions
+import scala.language.postfixOps
+
 class StringOperations(value: String) {
   def sliceLines(from: Int, to: Int): String = {
     require(from >= 0, "from parameter must be greater than or equal 0")
